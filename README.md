@@ -1,1 +1,1 @@
-# cbs
+# Cloud Base System Collector
