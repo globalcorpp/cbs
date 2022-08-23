@@ -1,0 +1,35 @@
+k get all -n kubernetes-dashboard
+k get all -n kube-system
+
+k get pods --all-namespaces
+k get svc --all-namespaces
+
+//ClusterIP to NodePort
+k edit -n kubernetes-dashboard services kubernetes-dashboard
+
+//dashboard-adminuser.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+//dashboard-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+kubectl -n kubernetes-dashboard create token admin-user
+eyJhbGciOiJSUzI1NiIsImtpZCI6Il91cURISnlRRnp2djEtN3hOM3pqWElRYWtOemtBN3BxS2V6SmRuR2VGMjgifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNjYwNjYzNzM3LCJpYXQiOjE2NjA2NjAxMzcsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhZG1pbi11c2VyIiwidWlkIjoiNjdmMTc4MjYtMjg0NS00Y2MwLWFlODctYTBiMWZmMzBhNWQwIn19LCJuYmYiOjE2NjA2NjAxMzcsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDphZG1pbi11c2VyIn0.qqwGsRqRpScMtAyxgNj6nlFRIdvQIXmjaVjSAdlhURaMqQ1GxnEZej8iU4yp73CQs15zfxz0VV_2ra8pjQ_Og0_9qLiy1XiymBydB8oQD614cHz8VDFoKqZlVHkq2hGfXUUL0_nrghQmbS4yPKpS2JqXqI65toKoU5ren5SqJhpEJrn-stln-79z0F_tEFVyIx0odzu_lSJq4vIA17eU3lmRsnDyVaSP6QzZWlL7TDyLIEfhIFyePkxABwgB5XgRTeeSpkJ9hJ_iXiF6sq622g7WZ7yGCCF99L0Ve-NVaGM9cQRvdESD5znom87VaVNuOrZSuC9thY15HhQ7KRqfJw
+
+kubectl -n kubernetes-dashboard delete serviceaccount admin-user
+kubectl -n kubernetes-dashboard delete clusterrolebinding admin-user
