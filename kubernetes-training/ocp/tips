@@ -1,0 +1,9 @@
+https://tomd.xyz/openshift-nexus-docker-registry/
+https://medium.com/flowfactor/creating-a-private-external-image-registry-for-openshift-4-3-a67fc27cd5a4
+http://v1.uncontained.io/playbooks/continuous_delivery/external-docker-registry-integration.html
+https://www.underkube.com/posts/2021-02-11-external-registry-ocp/
+https://medium.com/@salih.sipahi1/use-your-own-external-registry-with-openshift-container-platform-8bafff3f660
+https://cloud.redhat.com/blog/image-streams-faq
+https://blog.cloudowski.com/articles/why-managing-container-images-on-openshift-is-better-than-on-kubernetes/
+https://cloud.redhat.com/blog/remotely-push-pull-container-images-openshift
+https://two-oes.medium.com/disconnected-openshift-4-with-internal-registry-a5542fa167c
