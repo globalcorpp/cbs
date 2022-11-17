@@ -33,3 +33,8 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6Il91cURISnlRRnp2djEtN3hOM3pqWElRYWtOemtBN3BxS2V6SmRu
 
 kubectl -n kubernetes-dashboard delete serviceaccount admin-user
 kubectl -n kubernetes-dashboard delete clusterrolebinding admin-user
+
+//To load completions in your current shell session:
+source <(helm completion bash)
+//To load completions for every new session, execute once:
+helm completion bash > /etc/bash_completion.d/helm
