@@ -3,3 +3,38 @@ book - libgen.li
 Andrew Block, Austin Dewey - Managing Kubernetes Resources Using Helm_ Simplifying how to build, package, and distribute applications for Kubernetes, 2nd Edi (2022, Packt Publishing)
 Butcher, Matt, Farina, Dolitsky, Josh - Learning Helm_ Managing Apps on Kubernetes (2021, O'Reilly (WILEY UK)
 
+helm dependency update
+//we can search charts inside the Artifacthub site.
+helm search hub redis
+helm install bitnami-wp wordpress
+https://devops4solutions.medium.com/how-to-add-dependency-in-helm-83422d19c334
+https://github.com/Doublemine/gcr.io-mirror/blob/master/google-samples.md
+
+https://medium.com/@mi-alkhamis/helm-3fadcfcc8a2d
+https://medium.com/@mi-alkhamis/helm-3fadcfcc8a2d
+
+ll /home/dtn/.cache/helm/repository/
+vim /home/dtn/.config/helm/repositories.yaml
+helm show readme bitnami/mysql
+//we can search in added repositories
+helm search repo mysql
+
+helm install my-wordpress bitnami/wordpress -n wordpress --create-namespace
+helm get notes -n wordpress my-wordpress
+helm list -all-namespaces or helm list -A
+kubectl -n wordpress get deployments.apps my-wordpress -o yaml
+helm uninstall -n wordpress my-wordpress
+//this command DOSENT deletes namespaces. You can delete it by kubectl delete namespaces wordpress
+//Get some helpful info about the installed ap
+//get status (show the text shown after an app is installed)
+helm status -n wordpress wordpress
+//by get command, like below
+helm get manifest -n wordpress wordpress
+//this command shows all manifest deployed for the WordPress app.
+helm get values -n wordpress wordpress
+
+//Let’s look at how to add a value to the WordPress helm chart.
+helm install -n wordpress mywp bitnami/wordpress --set wordpressBlogName=JustForFun
+//Send value by file
+//passing more arguments in shell maybe is annoying, so we use -f values.yaml or —values values.yaml
+helm install -n wordpress wordpress bitnami/wordpress --create-namespace -f values.yaml
