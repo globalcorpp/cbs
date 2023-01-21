@@ -1,0 +1,53 @@
+https://goharbor.io/docs/1.10/install-config/configure-https/
+https://yuweisung.medium.com/harbor-cert-manager-self-signed-ca-and-containerd-docker-troubleshooting-16b48b34503d
+
+
+wget https://github.com/goharbor/harbor/releases/download/v2.5.1/harbor-offline-installer-v2.5.1.tgz
+tar -xzvf harbor-offline-installer-v2.5.1.tgz
+cp -p harbor.yml.tmpl harbor.yml
+mkdir cert
+
+//Generate a Certificate Authority Certificate
+openssl genrsa -out ca.key 4096
+
+openssl req -x509 -new -nodes -sha512 -days 3650  -subj "/C=CN/ST=Beijing/L=Beijing/O=example/OU=Personal/CN=pr.dotinlab.ir"  -key ca.key  -out ca.crt
+
+//Generate a Server Certificate
+openssl genrsa -out pr.dotinlab.ir.key 4096
+
+openssl req -sha512 -new -subj "/C=CN/ST=Beijing/L=Beijing/O=example/OU=Personal/CN=pr.dotinlab.ir" -key pr.dotinlab.ir.key -out pr.dotinlab.ir.csr
+
+//Generate an x509 v3 extension file
+cat > v3.ext <<-EOF
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1=pr.dotinlab.ir
+DNS.2=pr.dotinlab
+DNS.3=ocp-pr-1
+EOF
+
+//
+openssl x509 -req -sha512 -days 3650     -extfile v3.ext  -CA ca.crt -CAkey ca.key -CAcreateserial  -in pr.dotinlab.ir.csr -out pr.dotinlab.ir.crt
+
+//Convert yourdomain.com.crt to yourdomain.com.cert, for use by Docker.
+//The Docker daemon interprets .crt files as CA certificates and .cert files as client certificates.
+openssl x509 -inform PEM -in yourdomain.com.crt -out yourdomain.com.cert
+
+cp yourdomain.com.cert /etc/docker/certs.d/yourdomain.com/
+cp yourdomain.com.key /etc/docker/certs.d/yourdomain.com/
+cp ca.crt /etc/docker/certs.d/yourdomain.com/
+
+systemctl restart docker
+
+
+./install.sh --with-trivy --with-chartmuseum --with-notary
+
+//copy ca.crt to cluster node
+scp pi@ns1.home.lab:/etc/pki/ca/ca.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+sudo systemctl restart containerd
