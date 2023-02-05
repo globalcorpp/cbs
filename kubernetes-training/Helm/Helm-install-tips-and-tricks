@@ -1,0 +1,62 @@
+
+//helm 
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+//or
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+//To load completions in your current shell session:
+source <(helm completion bash)
+//To load completions for every new session, execute once:
+helm completion bash > /etc/bash_completion.d/helm
+
+helm create application-1
+deployment.yaml -> values.yaml
+helm install chart-1 .
+helm lint or helm template . or helm template . | kubectl apply -f -
+/charts -> helm create new-chart
+helm upgrade chartname .
+comments {{ /*  test  */  }}
+helm list
+helm install chart-2 . -f new-value.yaml
+helm template .
+
+setup the chart museum repo /pull/push/package
+helm repo add chartmuseum https://chartmuseum.github.io/charts
+helm repo list
+helm repo update
+helm install chartmuseum/chartmuseum --generate-name
+helm uinstall chartname
+helm pull chartmuseum/chartmuseum
+ls
+tar -xvf ----.tgz
+helm install myrepo .
+hel repo add our-repo http://nodeip:30005/
+helm repo list
+helm package .
+ls
+curl --data-binary "@application----.tgz" http://nodeip:30005/api/charts
+DISABLE_API:false
+helm repo update
+
+helm list
+helm unistall chart-1
+helm repo list
+helm repo remove our-repo
+helm update
+helm repo update
+helm install our-repo .
+helm repo update
+helm search repo
+
+
+helm repo add stable htpps://charts.helm.sh/stable
+helm search repo grafana
+helm install grafana stable/grafana
+helm pull stable/grafana
+tar -xvf ----.tar.gz
+
+
+
+
